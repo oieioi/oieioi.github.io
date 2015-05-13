@@ -3,26 +3,31 @@
   <head>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <meta content="utf-8" http-equiv="encoding">
+    <meta name="viewport" content="initial-scale=1.0">
     <title>permutation</title>
   </head>
   <body>
     <h1>順列</h1>
+    <div>順列を求めます</div>
+    <div id="error">&nbsp;</div>
     <div>
       <textarea
         id="subsets"
         rows="10"
         cols="20">
 男
-女
-</textarea>
+女</textarea>
       <label for="size">数:</label>
       <input
         id="size"
         type="number"
-        value="0"/>
+        value="2"/>
       <button class="js-btn-execute" onclick="execPerm()">見る</button>
     </div>
-    <div id="result"></div>
+    <div>
+      <textarea id="result"></textarea>
+    </div>
+    <div><a href="../">もどる</a></div>
     <script src="./main.js"></script>
   </body>
 </html>

@@ -18,7 +18,7 @@
       return result;
     };
     f = function(perms, subsets, size) {
-      if (perms[0].length === size) {
+      if (perms[0].length >= size) {
         return perms;
       }
       return f(createNewPerms(perms, subsets), subsets, size);
@@ -26,13 +26,26 @@
     return f(aryProcessed, ary, size);
   };
 
+  var showError = function(message){
+    document.getElementById('error').textContent = message;
+  };
+
+  var clearError = function(){
+    document.getElementById('error').innerHTML = '&nbsp;';
+  };
+
   window.execPerm = function(){
     var size = +document.getElementById('size').value;
+    if (isNaN(size)) {
+      return showError('数字を入れてね');
+    }
+    if (size <= 0) {
+      return showError('0や負の数はだめだよ');
+    }
+    clearError();
     var subsetsStr = document.getElementById('subsets').value;
     var subsets = subsetsStr.split('\n');
     var perms = getPermutations(subsets, size);
-    document.getElementById('result').textContent = perms.map(function(item){return item.join('')}).join(',');
-    console.log(perms);
+    document.getElementById('result').value = perms.map(function(item){return item.join('')}).join(' ');
   };
-
 }).call(this);
