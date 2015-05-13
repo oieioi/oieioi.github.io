@@ -43,9 +43,12 @@
       return showError('0や負の数はだめだよ');
     }
     clearError();
-    var subsetsStr = document.getElementById('subsets').value;
-    var subsets = subsetsStr.split('\n');
+    var subsets = document.getElementById('subsets')
+      .value
+      .split('\n');
     var perms = getPermutations(subsets, size);
-    document.getElementById('result').value = perms.map(function(item){return item.join('')}).join(' ');
+    document.getElementById('result').value = perms.map(function(item){
+      return item.join('')
+    }).join(' ');
   };
 }).call(this);

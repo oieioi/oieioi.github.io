@@ -2,7 +2,6 @@
 <html lang="ja">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <title>permutation</title>
   </head>
   <body>
@@ -20,11 +19,22 @@
       <input
         id="size"
         type="number"
-        value="2"/>
-      <button class="js-btn-execute" onclick="execPerm()">見る</button>
+        required
+        min="1"
+        value="2"
+        />
+      <button
+        class="js-btn-execute"
+        onclick="execPerm()"
+        >見る</button>
     </div>
     <div>
-      <textarea id="result"></textarea>
+      <textarea
+        id="result"
+        rows="30"
+        cols="20"
+        style="width:100%;"
+        ></textarea>
     </div>
     <div><a href="../">もどる</a></div>
     <script src="./main.js"></script>
