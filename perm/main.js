@@ -77,14 +77,12 @@
 
   var init = function(){
     readURI();
-    readAndWrite();
+    createTwitterLink(result);
+    //readAndWrite();
   };
 
-
   window.execPerm = function(){
-    var i =readAndWrite();
-    console.log(i);
-    updateURI(i);
+    updateURI(readAndWrite());
   };
 
   var readAndWrite = function(){
@@ -125,8 +123,6 @@
     .join(separator);
 
     document.getElementById('result').value = result;
-
-    createTwitterLink(result);
 
     return {
       subsets: subsets.join('\n'),
