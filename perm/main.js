@@ -43,12 +43,37 @@
       return showError('0や負の数はだめだよ');
     }
     clearError();
+
+    var separator = document.getElementById('separator').value;
+    var filterStrings = document.getElementById('filter').value;
+    var filter = filterStrings === '' ? null : new RegExp(filterStrings);
+    var duplicated = document.getElementById('duplicated').checked;
+
     var subsets = document.getElementById('subsets')
       .value
       .split('\n');
+
     var perms = getPermutations(subsets, size);
-    document.getElementById('result').value = perms.map(function(item){
-      return item.join('')
-    }).join(' ');
+     document.getElementById('result').value = perms.map(function(item){
+      return item.join('');
+    })
+    .filter(function(item, index, self){
+
+      if (!filter) {
+        return true;
+      }
+
+      return filter.test(item);
+    })
+    .filter(function(item, index, self){
+
+      if (duplicated) {
+        return self.indexOf(item) === index;
+      }
+
+      return true;
+    })
+
+    .join(separator);
   };
 }).call(this);
