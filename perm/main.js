@@ -26,6 +26,11 @@
     return f(aryProcessed, ary, size);
   };
 
+  var createTwitterLink = function(message){
+    var messageEncoded = encodeURIComponent(message.substr(0, 120) + ' ' + location.href);
+    document.getElementById('twit').href = 'http://twitter.com/?status=' + messageEncoded;
+  };
+
   var showError = function(message){
     document.getElementById('error').textContent = message;
   };
@@ -54,26 +59,25 @@
       .split('\n');
 
     var perms = getPermutations(subsets, size);
-     document.getElementById('result').value = perms.map(function(item){
+    var result = perms.map(function(item){
       return item.join('');
     })
     .filter(function(item, index, self){
-
       if (!filter) {
         return true;
       }
-
       return filter.test(item);
     })
     .filter(function(item, index, self){
-
       if (duplicated) {
         return self.indexOf(item) === index;
       }
-
       return true;
     })
-
     .join(separator);
+
+    document.getElementById('result').value = result;
+
+    createTwitterLink(result);
   };
 }).call(this);
