@@ -82,7 +82,7 @@
   window.execPerm = function(){
     var i = readAndWrite();
     updateURI(i);
-    createTwitterLink(i);
+    createTwitterLink(i.result);
   };
 
   var readAndWrite = function(){
@@ -129,7 +129,8 @@
       size: size,
       separator: separator,
       filter: filterStrings,
-      duplicated: duplicated
+      duplicated: duplicated,
+      result: result
     };
   };
 
