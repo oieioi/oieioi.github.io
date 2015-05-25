@@ -48,7 +48,6 @@
     rawQueries.forEach(function(item){
       query[item.split('=')[0]] = decodeURIComponent(item.split('=')[1]);
     });
-    console.log(query)
     if (query.size !== undefined && query.size !== '') {
       document.getElementById('size').value = query.size;
     }
@@ -77,12 +76,13 @@
 
   var init = function(){
     readURI();
-    createTwitterLink(result);
     //readAndWrite();
   };
 
   window.execPerm = function(){
-    updateURI(readAndWrite());
+    var i = readAndWrite();
+    updateURI(i);
+    createTwitterLink(i);
   };
 
   var readAndWrite = function(){
