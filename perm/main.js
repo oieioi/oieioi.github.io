@@ -27,9 +27,8 @@
   };
 
   var updateURI = function(params){
-    var hash = encodeURIComponent(params.subsets);
-    location.hash = '#' + hash;
-    var query = '?size='       + encodeURIComponent(params.size)        +
+    var query = '?subsets='    + encodeURIComponent(params.subsets)     +
+                '&size='       + encodeURIComponent(params.size)        +
                 '&separator='  + encodeURIComponent(params.separator)   +
                 '&filter='     + encodeURIComponent(params.filter)      +
                 '&duplicated=' + encodeURIComponent(params.duplicated);
@@ -40,7 +39,7 @@
   var readURI = function(){
     var hash = decodeURIComponent(location.hash.replace(/^#/, ''));
     if (hash) {
-      document.getElementById('subsets').value =  hash;
+      document.getElementById('subsets').value = hash;
     }
     var rawQueries = location.search.replace(/^\?/, '').split('&');
 
@@ -48,6 +47,9 @@
     rawQueries.forEach(function(item){
       query[item.split('=')[0]] = decodeURIComponent(item.split('=')[1]);
     });
+    if (query.subsets !== undefined && query.subsets !== '') {
+      document.getElementById('subsets').value = query.subsets;
+    }
     if (query.size !== undefined && query.size !== '') {
       document.getElementById('size').value = query.size;
     }
@@ -57,7 +59,9 @@
     if (query.filter !== undefined && query.filter !== '') {
       document.getElementById('filter').value = query.filter;
     }
-    document.getElementById('duplicated').checked = query.duplicated.indexOf('true') !== -1 ? true : false;
+    if (query.duplicated !== undefined && query.duplicated !== '') {
+      document.getElementById('duplicated').checked = query.duplicated.indexOf('true') !== -1 ? true : false;
+    }
   };
 
   var createTwitterLink = function(message){
@@ -74,18 +78,11 @@
     document.getElementById('error').innerHTML = '&nbsp;';
   };
 
-  var init = function(){
-    readURI();
-    //readAndWrite();
+  var writeResult = function(result){
+    document.getElementById('result').value = result;
   };
 
-  window.execPerm = function(){
-    var i = readAndWrite();
-    updateURI(i);
-    createTwitterLink(i.result);
-  };
-
-  var readAndWrite = function(){
+  var readFromDOM = function(){
     var size = +document.getElementById('size').value;
     if (isNaN(size)) {
       return showError('数字を入れてね');
@@ -122,8 +119,6 @@
     })
     .join(separator);
 
-    document.getElementById('result').value = result;
-
     return {
       subsets: subsets.join('\n'),
       size: size,
@@ -132,6 +127,28 @@
       duplicated: duplicated,
       result: result
     };
+  };
+
+  var init = function(){
+    readURI();
+    //readAndWrite();
+    document.querySelector('.js-btn-execute')
+    .addEventListener('click', function(e){
+      e.preventDefault();
+      var re = readFromDOM();
+      writeResult(re.result);
+    });
+    document.querySelector('.js-btn-link')
+    .addEventListener('click', function(e){
+      e.preventDefault();
+      var re = readFromDOM();
+      updateURI(re);
+      writeResult(re.result);
+      createTwitterLink(re.result);
+    });
+  };
+
+  var execPerm = function(){
   };
 
   init();
