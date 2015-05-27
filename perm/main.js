@@ -26,21 +26,23 @@
     return f(aryProcessed, ary, size);
   };
 
+  var getQuery = function(params) {
+    return '?subsets='    + encodeURIComponent(params.subsets.join('\n')) +
+           '&size='       + encodeURIComponent(params.size)               +
+           '&separator='  + encodeURIComponent(params.separator)          +
+           '&filter='     + encodeURIComponent(params.filterStrings)      +
+           '&duplicated=' + encodeURIComponent(params.duplicated);
+  };
+
   var updateURI = function(params){
-    var hash = encodeURIComponent(params.subsets);
-    location.hash = '#' + hash;
-    var query = '?size='       + encodeURIComponent(params.size)        +
-                '&separator='  + encodeURIComponent(params.separator)   +
-                '&filter='     + encodeURIComponent(params.filter)      +
-                '&duplicated=' + encodeURIComponent(params.duplicated);
-    location.search = query;
+    location.search = getQuery(params);
     //console.log(query);
   };
 
   var readURI = function(){
     var hash = decodeURIComponent(location.hash.replace(/^#/, ''));
     if (hash) {
-      document.getElementById('subsets').value =  hash;
+      document.getElementById('subsets').value = hash;
     }
     var rawQueries = location.search.replace(/^\?/, '').split('&');
 
@@ -48,6 +50,9 @@
     rawQueries.forEach(function(item){
       query[item.split('=')[0]] = decodeURIComponent(item.split('=')[1]);
     });
+    if (query.subsets !== undefined && query.subsets !== '') {
+      document.getElementById('subsets').value = query.subsets;
+    }
     if (query.size !== undefined && query.size !== '') {
       document.getElementById('size').value = query.size;
     }
@@ -57,13 +62,18 @@
     if (query.filter !== undefined && query.filter !== '') {
       document.getElementById('filter').value = query.filter;
     }
-    document.getElementById('duplicated').checked = query.duplicated.indexOf('true') !== -1 ? true : false;
+    if (query.duplicated !== undefined && query.duplicated !== '') {
+      document.getElementById('duplicated').checked = query.duplicated.indexOf('true') !== -1 ? true : false;
+    }
   };
 
-  var createTwitterLink = function(message){
-    var messageEncoded = encodeURIComponent(message.substr(0, 120));
+  var createTwitterLink = function(message, query){
+    var messageEncoded = '';
+    if (message) {
+      messageEncoded = encodeURIComponent(message.substr(0, 110));
+    }
     document.getElementById('twit').href = 'http://twitter.com/intent/tweet?text=' + messageEncoded +
-                                           '&url=' + encodeURIComponent(location.href);
+                                           '&url=' + encodeURIComponent(location.origin + location.pathname + query);
   };
 
   var showError = function(message){
@@ -74,18 +84,11 @@
     document.getElementById('error').innerHTML = '&nbsp;';
   };
 
-  var init = function(){
-    readURI();
-    //readAndWrite();
+  var writeResult = function(result){
+    document.getElementById('result').value = result;
   };
 
-  window.execPerm = function(){
-    var i = readAndWrite();
-    updateURI(i);
-    createTwitterLink(i.result);
-  };
-
-  var readAndWrite = function(){
+  var getInput = function(){
     var size = +document.getElementById('size').value;
     if (isNaN(size)) {
       return showError('数字を入れてね');
@@ -104,34 +107,66 @@
       .value
       .split('\n');
 
-    var perms = getPermutations(subsets, size);
+    return {
+      subsets: subsets,
+      size: size,
+      separator: separator,
+      filter: filter,
+      filterStrings: filterStrings,
+      duplicated: duplicated
+    };
+  };
+
+
+  var readFromDOM = function(){
+    var inputs = getInput();
+    var perms = getPermutations(inputs.subsets, inputs.size);
     var result = perms.map(function(item){
       return item.join('');
     })
     .filter(function(item, index, self){
-      if (!filter) {
+      if (!inputs.filter) {
         return true;
       }
-      return filter.test(item);
+      return inputs.filter.test(item);
     })
     .filter(function(item, index, self){
-      if (duplicated) {
+      if (inputs.duplicated) {
         return self.indexOf(item) === index;
       }
       return true;
     })
-    .join(separator);
-
-    document.getElementById('result').value = result;
+    .join(inputs.separator);
 
     return {
-      subsets: subsets.join('\n'),
-      size: size,
-      separator: separator,
-      filter: filterStrings,
-      duplicated: duplicated,
+      subsets: inputs.subsets,
+      size: inputs.size,
+      separator: inputs.separator,
+      filterStrings: inputs.filterStrings,
+      filter: inputs.filter,
+      duplicated: inputs.duplicated,
       result: result
     };
+  };
+
+  var init = function(){
+    readURI();
+    var inputs = getInput();
+    createTwitterLink(inputs.result, getQuery(inputs));
+
+    document.querySelector('.js-btn-execute')
+    .addEventListener('click', function(e){
+      e.preventDefault();
+      var re = readFromDOM();
+      writeResult(re.result);
+      createTwitterLink(re.result, getQuery(re));
+    });
+    document.querySelector('.js-btn-link')
+    .addEventListener('click', function(e){
+      e.preventDefault();
+      var re = readFromDOM();
+      updateURI(re);
+    });
   };
 
   init();
