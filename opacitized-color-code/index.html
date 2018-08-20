@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+    <title>opacitized color code</title>
+    <style>
+body {
+  margin: 0;
+  padding: 0;
+}
+.color {
+  width: 30%;
+  height: 500px;
+  display: inline-block;
+}
+
+    </style>
+  </head>
+  <body id="body">
+    <section>
+      <label>color code(RGB 16):<input id="color-code" type="text" value="dddddd" onChange="change();"></label>
+      <label>opacity:<input id="opacity" type="text" value="0.5" onChange="change();"></label>
+    </section>
+
+    <div class="color" id='raw'>raw</div>
+    <div class="color" id='opa'>opacity</div>
+    <div class="color" id='result'>result</div>
+    <script>
+window.change = function(){
+  var opacity = Number(document.getElementById('opacity').value);
+  var color = document.getElementById('color-code').value;
+  var fontColor = calcComplementaryColor(color);
+
+  document.getElementById('raw').style.backgroundColor = '#' + color;
+  document.getElementById('raw').style.color = '#' + fontColor;
+  document.getElementById('raw').textContent = '#' + color;
+
+  document.getElementById('opa').style.backgroundColor = '#' + color;
+  document.getElementById('opa').style.opacity = opacity;
+  document.getElementById('opa').style.color = '#' + fontColor;
+  document.getElementById('opa').textContent = '#' + color;
+
+
+  var opacitizedColorCode = calcOpacitizedColorCode(color, opacity);
+  var opacitizedFontColor = calcOpacitizedColorCode(fontColor, opacity);
+
+  document.getElementById('result').style.backgroundColor = '#' + opacitizedColorCode;
+  document.getElementById('result').style.color = '#' + opacitizedFontColor;
+  document.getElementById('result').textContent = '#' + opacitizedColorCode;
+
+};
+
+window.calcOpacitizedColorCode = function (colorCode, opacity) {
+  colorCode = colorCode.replace('#', '');
+
+  var red = colorCode.slice(0,2);
+  var green = colorCode.slice(2,4);
+  var blue = colorCode.slice(4,6);
+
+  var opacitizedColorCode = [red, green, blue].map(function(colorCode){
+    return calcOpacitized(colorCode, opacity);
+  }).join('');
+
+  return opacitizedColorCode;
+}
+
+window.calcOpacitized = function (hex, opacity) {
+  var value = parseInt(hex, 16);
+  var max = 255;
+
+  var opacitized = Math.floor(max - opacity * (max - value));
+  return ("0" + opacitized.toString(16)).slice(-2);
+};
+
+window.calcComplementaryColor = function(colorCode){
+  colorCode = colorCode.replace('#', '');
+
+  var red = colorCode.slice(0,2);
+  var green = colorCode.slice(2,4);
+  var blue = colorCode.slice(4,6);
+
+  return [red, green, blue].map(function(c){
+    return ("0" + (255 - parseInt(c, 16)).toString(16)).slice(-2);
+  }).join('');
+
+}
+
+window.change();
+    </script>
+  </body>
+</html>
