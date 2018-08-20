@@ -63,7 +63,7 @@ body {
   <body id="body">
     <section class="controller">
       <label for="color-code-value">RGB16:</label><input id="color-code-value" type="text" value="faafff" onChange="change();">
-      <label for="opacity-value">opacity:</label><input id="opacity-value" type="text" value="0.5" onChange="change();">
+      <label for="opacity-value">opacity:</label><input id="opacity-value" type="number" min="0" max="1" step="0.01" value="0.5" onChange="change();">
     </section>
 
     <section class="result">
@@ -135,8 +135,7 @@ window.calcComplementaryColor = function(colorCode){
 window.change();
     </script>
     <section class="description">
-      #000000 を opacity 0.5で計算した結果は #7f7f7f になると思ってたけど、Chromeの場合そうならない。Firefoxはだいたい同じになる。なんでだろう。
-      <a href='/'>top</a>
+      <a href='/'>go to top</a>
     </section>
   </body>
 </html>
