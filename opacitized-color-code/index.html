@@ -2,52 +2,77 @@
 <html lang="ja">
   <head>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta content="utf-8" http-equiv="encoding">
     <title>opacitized color code</title>
     <style>
 body {
+  font-family: Courier, sans-serif;
   margin: 0;
   padding: 0;
 }
+.controller {
+  margin: 20px;
+  font-size: 20pt;
+}
+
+.controller label {
+  margin: 20px;
+}
+
+.controller input {
+  font-size: 20pt;
+}
+.result {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
 .color {
-  width: 30%;
+  flex-shrink: 1;
+  flex-basis: 33%;
+  font-size: 20pt;
+  text-align: center;
   height: 500px;
-  display: inline-block;
+  line-height: 500px;
 }
 
     </style>
   </head>
   <body id="body">
-    <section>
-      <label>color code(RGB 16):<input id="color-code" type="text" value="dddddd" onChange="change();"></label>
-      <label>opacity:<input id="opacity" type="text" value="0.5" onChange="change();"></label>
+    <section class="controller">
+      <label>RGB16:<input id="color-code-value" type="text" value="faafff" onChange="change();"></label>
+      <label>opacity:<input id="opacity-value" type="text" value="0.5" onChange="change();"></label>
     </section>
 
-    <div class="color" id='raw'>raw</div>
-    <div class="color" id='opa'>opacity</div>
-    <div class="color" id='result'>result</div>
+    <section class="result">
+      <div class="color" id='raw'>raw</div>
+      <div class="color" id='opacity'>opacity</div>
+      <div class="color" id='opacitized'>opacitized</div>
+    </section>
+
     <script>
 window.change = function(){
-  var opacity = Number(document.getElementById('opacity').value);
-  var color = document.getElementById('color-code').value;
+  var opacity = Number(document.getElementById('opacity-value').value);
+  var color = document.getElementById('color-code-value').value;
   var fontColor = calcComplementaryColor(color);
 
   document.getElementById('raw').style.backgroundColor = '#' + color;
   document.getElementById('raw').style.color = '#' + fontColor;
   document.getElementById('raw').textContent = '#' + color;
 
-  document.getElementById('opa').style.backgroundColor = '#' + color;
-  document.getElementById('opa').style.opacity = opacity;
-  document.getElementById('opa').style.color = '#' + fontColor;
-  document.getElementById('opa').textContent = '#' + color;
-
+  document.getElementById('opacity').style.backgroundColor = '#' + color;
+  document.getElementById('opacity').style.opacity = opacity;
+  document.getElementById('opacity').style.color = '#' + fontColor;
+  document.getElementById('opacity').textContent = 'opacity: ' + opacity;
 
   var opacitizedColorCode = calcOpacitizedColorCode(color, opacity);
   var opacitizedFontColor = calcOpacitizedColorCode(fontColor, opacity);
 
-  document.getElementById('result').style.backgroundColor = '#' + opacitizedColorCode;
-  document.getElementById('result').style.color = '#' + opacitizedFontColor;
-  document.getElementById('result').textContent = '#' + opacitizedColorCode;
+  document.getElementById('opacitized').style.backgroundColor = '#' + opacitizedColorCode;
+  document.getElementById('opacitized').style.color = '#' + opacitizedFontColor;
+  document.getElementById('opacitized').textContent = '#' + opacitizedColorCode;
 
 };
 
@@ -69,10 +94,11 @@ window.calcOpacitized = function (hex, opacity) {
   var value = parseInt(hex, 16);
   var max = 255;
 
-  var opacitized = Math.floor(max - opacity * (max - value));
+  var opacitized = max - Math.ceil(opacity * (max - value));
   return ("0" + opacitized.toString(16)).slice(-2);
 };
 
+// 補色
 window.calcComplementaryColor = function(colorCode){
   colorCode = colorCode.replace('#', '');
 
@@ -88,5 +114,6 @@ window.calcComplementaryColor = function(colorCode){
 
 window.change();
     </script>
+    <a href='/'>top</a>
   </body>
 </html>
