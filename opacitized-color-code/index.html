@@ -13,17 +13,24 @@ body {
   background: white;
 }
 .controller {
-  margin: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
   font-size: 20pt;
 }
 
 .controller label {
-  margin: 20px;
+  flex-basis: 49%;
 }
 
 .controller input {
   font-size: 20pt;
   font-family: Courier, sans-serif;
+  margin: 10px;
+  text-align: right;
+  padding: 10px;
+  border: 1px solid;
+  border-radius: 3px;
 }
 .result {
   display: flex;
@@ -36,16 +43,27 @@ body {
   flex-basis: 33%;
   font-size: 20pt;
   text-align: center;
-  height: 500px;
-  line-height: 500px;
+  padding: 100px 0;
+}
+
+@media (max-width: 640px) {
+  .result {
+    flex-direction: column;
+  }
+  .color {
+    flex-basis: 100%;
+      padding: 50px 0;
+    display: block;
+    width: 100%;
+  }
 }
 
     </style>
   </head>
   <body id="body">
     <section class="controller">
-      <label>RGB16:<input id="color-code-value" type="text" value="faafff" onChange="change();"></label>
-      <label>opacity:<input id="opacity-value" type="text" value="0.5" onChange="change();"></label>
+      <label for="color-code-value">RGB16:</label><input id="color-code-value" type="text" value="faafff" onChange="change();">
+      <label for="opacity-value">opacity:</label><input id="opacity-value" type="text" value="0.5" onChange="change();">
     </section>
 
     <section class="result">
