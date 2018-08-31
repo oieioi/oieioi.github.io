@@ -14,7 +14,8 @@
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta content="utf-8" http-equiv="encoding">
-    <title>opacitized color code</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Opacitized Color Code</title>
     <style>
 body {
   font-family: Courier, sans-serif;
@@ -70,79 +71,65 @@ body {
 
     </style>
   </head>
-  <body id="body">
-    <section class="controller">
-      <label for="color-code-value">RGB16:</label><input id="color-code-value" type="text" value="faafff" onChange="change();">
-      <label for="opacity-value">opacity:</label><input id="opacity-value" type="number" min="0" max="1" step="0.01" value="0.5" onChange="change();">
-    </section>
+  <body>
+    <div id="content">
+      <section class="controller">
+        <label for="color-code-value">RGB16:</label>
+        <input id="color-code-value" type="text" v-model="colorCode">
+        <label for="opacity-value">opacity:</label>
+        <input id="opacity-value" type="number" min="0" max="1" step="0.01" v-model="opacity">
+      </section>
 
-    <section class="result">
-      <div class="color" id='raw'>raw</div>
-      <div class="color" id='opacity'>opacity</div>
-      <div class="color" id='opacitized'>opacitized</div>
-    </section>
+      <section class="result">
+        <div class="color" v-bind:style="{backgroundColor: '#' + colorCode, color: '#' + calcComplementaryColor(colorCode)}">#{{colorCode}}</div>
+        <div class="color" v-bind:style="{backgroundColor: '#' + colorCode, color: '#' + calcComplementaryColor(colorCode), opacity: opacity}">{{opacity}}</div>
+        <div class="color" v-bind:style="{backgroundColor: '#' + calcOpacitizedColorCode(colorCode, opacity), color: '#' + calcOpacitizedColorCode(calcComplementaryColor(colorCode), opacity)}">#{{calcOpacitizedColorCode(colorCode, opacity)}}</div>
+      </section>
+    </div>
 
     <script>
-window.change = function(){
-  var opacity = Number(document.getElementById('opacity-value').value);
-  var color = document.getElementById('color-code-value').value;
-  var fontColor = calcComplementaryColor(color);
+      var app = new Vue({
+        el: "#content",
 
-  document.getElementById('raw').style.backgroundColor = '#' + color;
-  document.getElementById('raw').style.color = '#' + fontColor;
-  document.getElementById('raw').textContent = '#' + color;
+        data: {
+          opacity: 0.5,
+          colorCode: 'faafff'
+        },
 
-  document.getElementById('opacity').style.backgroundColor = '#' + color;
-  document.getElementById('opacity').style.opacity = opacity;
-  document.getElementById('opacity').style.color = '#' + fontColor;
-  document.getElementById('opacity').textContent = 'opacity: ' + opacity;
+        methods: {
+          getRGB: function(string){
 
-  var opacitizedColorCode = calcOpacitizedColorCode(color, opacity);
-  var opacitizedFontColor = calcOpacitizedColorCode(fontColor, opacity);
+            var red = string.slice(0,2);
+            var green = string.slice(2,4);
+            var blue = string.slice(4,6);
 
-  document.getElementById('opacitized').style.backgroundColor = '#' + opacitizedColorCode;
-  document.getElementById('opacitized').style.color = '#' + opacitizedFontColor;
-  document.getElementById('opacitized').textContent = '#' + opacitizedColorCode;
+            return [red, green, blue];
+          },
 
-};
+          // opcity をかけたカラーコードを返す
+          calcOpacitizedColorCode:  function (colorCode, opacity) {
+            return this.getRGB(colorCode)
+              .map((colorCode)=> this.calcOpacitized(colorCode, opacity))
+              .join('');
+          },
 
-window.calcOpacitizedColorCode = function (colorCode, opacity) {
-  colorCode = colorCode.replace('#', '');
+          // 16進数の計算
+          calcOpacitized: function (hex, opacity) {
+            var value = parseInt(hex, 16);
+            var max = 255;
 
-  var red = colorCode.slice(0,2);
-  var green = colorCode.slice(2,4);
-  var blue = colorCode.slice(4,6);
+            var opacitized = max - Math.ceil(opacity * (max - value));
+            return ("0" + opacitized.toString(16)).slice(-2);
+          },
 
-  var opacitizedColorCode = [red, green, blue].map(function(colorCode){
-    return calcOpacitized(colorCode, opacity);
-  }).join('');
-
-  return opacitizedColorCode;
-}
-
-window.calcOpacitized = function (hex, opacity) {
-  var value = parseInt(hex, 16);
-  var max = 255;
-
-  var opacitized = max - Math.ceil(opacity * (max - value));
-  return ("0" + opacitized.toString(16)).slice(-2);
-};
-
-// 補色
-window.calcComplementaryColor = function(colorCode){
-  colorCode = colorCode.replace('#', '');
-
-  var red = colorCode.slice(0,2);
-  var green = colorCode.slice(2,4);
-  var blue = colorCode.slice(4,6);
-
-  return [red, green, blue].map(function(c){
-    return ("0" + (255 - parseInt(c, 16)).toString(16)).slice(-2);
-  }).join('');
-
-}
-
-window.change();
+          // 補色を返す
+          calcComplementaryColor: function(colorCode){
+            return this.getRGB(colorCode)
+              .map(c => ("0" + (255 - parseInt(c, 16)).toString(16)).slice(-2))
+              .join('');
+          },
+        },
+      });
     </script>
     <section class="description">
       <a href='/'>go to top</a>
