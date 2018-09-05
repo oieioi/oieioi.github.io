@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-78436915-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-78436915-3');
+    </script>
+
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="utf-8" http-equiv="encoding">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Calculate Padding</title>
+    <style>
+body {
+  font-family: Courier, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: white;
+}
+
+.controller {
+  background-color: #ccc;
+  padding: 10px;
+  margin: 10px;
+}
+
+.controller label {
+  display: block;
+}
+
+.result {
+  padding: 10px;
+  margin: 10px;
+}
+
+.result .element-a {
+  background-color: red;
+  color: white;
+}
+.result .element-b {
+  background-color: blue;
+  color: white;
+}
+
+@media (max-width: 640px) {
+}
+
+    </style>
+  </head>
+  <body>
+    <div id="content">
+      <section class="controller controller--element-a">
+        <h3>Element A</h3>
+        <label>font-size:<input type="number" step="1" v-model="aFontSize">px</label>
+        <label>line-height:<input type="number" step="0.01" v-model="aLineHeight"></label>
+        <div>actual line-hegiht: {{ calcLineHeight(aFontSize, aLineHeight) }}px</div>
+        <div>invisible padding: {{ calcInvisiblePaddint(aFontSize, aLineHeight) }}px</div>
+      </section>
+
+      <section class="controller">
+        <label>expected padding:<input type="number" step="1" v-model="expectedPadding">px</label>
+        <div>calculated padding:{{ calcPadding(expectedPadding, aFontSize, aLineHeight, bFontSize, bLineHeight) }}px</div>
+      </section>
+
+      <section class="controller controller--element-b">
+        <h3>Element B</h3>
+        <label>font-size:<input type="number" step="1" v-model="bFontSize">px</label>
+        <label>line-height:<input type="number" step="0.01" v-model="bLineHeight"></label>
+        <div>actual line-height: {{ calcLineHeight(bFontSize, bLineHeight) }}px</div>
+        <div>invisible padding: {{ calcInvisiblePaddint(bFontSize, bLineHeight) }}px</div>
+      </section>
+
+      <section class="result">
+        <div class="element-a" v-bind:style="{ fontSize: aFontSize + 'px', lineHeight: aLineHeight }">Element A</div>
+        <div class="element-b" v-bind:style="{ fontSize: bFontSize + 'px', lineHeight: bLineHeight, paddingTop:  calcPadding(expectedPadding, aFontSize, aLineHeight, bFontSize, bLineHeight) + 'px'  }">Element B</div>
+      </section>
+
+    </div>
+
+    <script>
+      var app = new Vue({
+        el: "#content",
+
+        data: {
+          aFontSize: 15,
+          aLineHeight: 1.5,
+          bFontSize: 15,
+          bLineHeight: 1.5,
+          expectedPadding: 30,
+          padding: null,
+        },
+
+        methods: {
+          calcLineHeight: (fontSize, lineHeight) => {
+            [fontSize, lineHeight] = [fontSize, lineHeight].map( v => Number(v));
+            return fontSize * lineHeight;
+          },
+          calcInvisiblePaddint: function(fontSize, lineHeight) {
+            [fontSize, lineHeight] = [fontSize, lineHeight].map( v => Number(v));
+            return (this.calcLineHeight(fontSize, lineHeight) - fontSize) / 2;
+          },
+          calcPadding: function(expectedPadding, aFontSize, aLineHeight, bFontSize, bLineHeight) {
+            [expectedPadding, aFontSize, aLineHeight, bFontSize, bLineHeight] = [expectedPadding, aFontSize, aLineHeight, bFontSize, bLineHeight].map( v => Number(v));
+
+            const invisiblePaddintT = this.calcInvisiblePaddint(aFontSize, aLineHeight);
+            const invisiblePaddintB = this.calcInvisiblePaddint(bFontSize, bLineHeight);
+
+            return expectedPadding - (invisiblePaddintT + invisiblePaddintB);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
