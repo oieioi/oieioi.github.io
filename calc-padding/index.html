@@ -24,6 +24,11 @@ body {
   background: white;
 }
 
+.description {
+  margin: 10px;
+  padding: 10px;
+}
+
 .controller {
   background-color: #ccc;
   padding: 10px;
@@ -54,6 +59,10 @@ body {
     </style>
   </head>
   <body>
+    <div id="description" class="description">
+      <p>Photoshopなどのグラフィックツールで作成されたUIデザインは余白を要素と要素の距離で表すが、HTML/CSSは line-height と padding, margin で余白を表現するので齟齬が生まれやすい。</p>
+      <p>Element A と Element B の font-size と line-height 、そして見た目上の余白(expected padding)を指定すると、Element AとElement B の間にあるべき padding を算出します。</p>
+    </div>
     <div id="content">
       <section class="controller controller--element-a">
         <h3>Element A</h3>
