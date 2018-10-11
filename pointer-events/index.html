@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-78436915-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-78436915-3');
+    </script>
+
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="utf-8" http-equiv="encoding">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>pointer-events: none; test</title>
+    <style>
+body {
+  font-family: Courier, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: white;
+}
+#content a {
+  pointer-events: none;
+  background-color: red;
+  padding: 20px;
+  display: inline-block;
+}
+#content a .clickable {
+  pointer-events: auto;
+  background-color: pink;
+  display: inline-block;
+  padding: 10px;
+}
+#content a .not-clickable {
+  background-color: cyan;
+  display: inline-block;
+  padding: 10px;
+}
+
+
+
+@media (max-width: 640px) {
+}
+
+    </style>
+  </head>
+  <body>
+    <div id="content">
+      <a href="#" class="" onclick="alert('you clicked!')">&lt;a&gt; element with pointer-events: none;
+        <span class="clickable"> child &lt;span&gt; element with pointer-events: auto;</span>
+        <span class="not-clickable"> child &lt;span&gt; element with no pointer-events attribute</span>
+      </a>
+    </div>
+
+    <section class="description">
+      <p>pointer-events:none; を設定すると、その要素はマウスポインタが発生させるイベントを無視するようになる。ただし、その子要素にpointer-events: auto を設定すると、その子要素はマウスイベントを無視しない。<a href="https://developer.mozilla.org/ja/docs/Web/CSS/pointer-events">詳しくはMDN</a></p>
+    </section>
+
+    <section class="control">
+      <a href='/'>go to top</a>
+    </section>
+  </body>
+</html>
