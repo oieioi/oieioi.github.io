@@ -19,7 +19,12 @@
       body {
         font-family: Courier, sans-serif;
         letter-spacing: 0.7em;
-          margin: 0;
+        margin: 0;
+        background-color: darkgreen;
+      }
+      h1, h2 {
+        background-color: greenyellow;
+        margin: 0;
       }
       h1 a {
         color: black;
@@ -28,19 +33,28 @@
       ol {
         padding: 0;
         margin: 0;
+        display: flex;
+        justify-content: flex-start;
+        background-color: green;
+        list-style: none;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        align-content: flex-start;
       }
       li {
-        text-align: center;
       }
       li a {
         color: white;
         display: block;
-        height: 100%;
-        padding: 20px;
+        line-height: 1.3;
+        text-indent: 0.7em;
+        padding: 0.5em 0;
         text-decoration: none;
       }
       li a:hover {
         color: #ddd;
+        background-color: purple;
         text-decoration: underline;
       }
       li:nth-child(odd) {
@@ -70,4 +84,6 @@
       <li><a href="./opacitized-color-code/index.html">opacitized color code</a></li>
       <li><a href="./calc-padding/index.html">Calculate Padding with Font-size and Line-height</a></li>
       <li><a href="./pointer-events/index.html">pointer-events: none;</a></li>
+      <li><a href="https://rubygems.org/gems/ketsuban" target="_blank">ketsuban.gem</a></li>
+      <li><a href="./fibuzu/fib.html">Fibonazzi uzumaki</a></li>
     </ol>

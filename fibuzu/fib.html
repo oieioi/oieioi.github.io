@@ -1,0 +1,47 @@
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" >
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="fib.js"></script>
+<script type="text/javascript" src="fib-uzu.js"></script>
+<canvas width="1000" height="1000" id ="my_canvas2"></canvas>
+<script type="text/javascript" >
+var canvas2 = document.getElementById('my_canvas2');
+var ctx2 = canvas2.getContext("2d");
+var fibUzu2 = new window.FibUzumaki(ctx2, true);
+
+var min = 200;
+var max = 1000;
+
+var xper = 10;
+var yper = 15;
+
+var autoSurf = (function() {
+    var x = 1001;
+    var xIncre = true;
+    var y = 750;
+    var yIncre = true;
+    return function() {
+        if (x > max ) xIncre = false;
+        if (x < min ) xIncre = true;
+        if (y > max ) yIncre = false;
+        if (y < min ) yIncre = true;
+        if (xIncre) {x += xper;} else {x -= xper;}
+        if (yIncre) {y += yper;} else {y -= yper;}
+
+        ctx2.clearRect(0,0,1000,1000);
+        var hankeiA = x/100;
+        var hankeiB = y/100;
+        for (var i = 0; i < 10; i++) {
+            fibUzu2.drawUzumaki(20, 500, 500, (i/5 * Math.PI),  true, hankeiA);
+            fibUzu2.drawUzumaki(20, 500, 500, (i/5 * Math.PI), false, hankeiB);
+        }
+    };
+})();
+
+$(document).ready(function(){
+    setInterval(autoSurf, 50);
+    $("#my_canvas2").on("click" ,function(event){
+        xper = Math.round(event.clientY / Math.round(Math.random()*100 + 1));
+        yper = Math.round(event.clientX / Math.round(Math.random()*100 + 1));
+    });
+})
+</script>
