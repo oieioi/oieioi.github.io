@@ -38,7 +38,7 @@ var autoSurf = (function() {
 })();
 
 $(document).ready(function(){
-    setInterval(autoSurf, 50);
+    setInterval(autoSurf, 100);
     $("#my_canvas2").on("click" ,function(event){
         xper = Math.round(event.clientY / Math.round(Math.random()*100 + 1));
         yper = Math.round(event.clientX / Math.round(Math.random()*100 + 1));
