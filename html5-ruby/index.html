@@ -17,14 +17,24 @@
     <meta content="utf-8" http-equiv="encoding">
     <title>html5 ruby テスト</title>
     <style>
-.body {
-  padding: 100px;
-}
+      .body {
+        margin: 30% auto 0;
+        text-align: center;
+      }
+      label {
+        display: block;
+      }
+      input[type=text] {
+        border: 1px solid #333;
+        background-color: #e8e8e8;
+        font-size: 1em;
+        margin-left: 10px;
+      }
     </style>
   </head>
   <body>
-    <label>本文:<input id="input-body" type="text" value="俺の両手は機関銃" onChange="changeRuby();"></label>
-    <label>ルビ:<input id="input-ruby" type="text" value="ダブル・マシンガン" onChange="changeRuby();"></label>
+    <label>本文:<input id="input-body" type="text" value="俺の両手は機関銃" onKeyup="changeRuby()" onChange="changeRuby();"></label>
+    <label>ルビ:<input id="input-ruby" type="text" value="ダブル・マシンガン" onKeyup="changeRuby()" onChange="changeRuby();"></label>
     <div class="body">
       <ruby id="ruby">
         <span id="ore-no-ryoute"></span>
@@ -35,7 +45,6 @@
 window.changeRuby = function(){
   document.getElementById('ore-no-ryoute').textContent = document.getElementById('input-body').value;
   document.getElementById('double-machine-gun').textContent = document.getElementById('input-ruby').value;
-
 };
 window.changeRuby();
     </script>
