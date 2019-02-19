@@ -23,6 +23,12 @@ body {
   padding: 0;
   background: white;
 }
+h1 {
+  font-size: 1.5em;
+  font-weight: normal;
+  letter-spacing: 1.1px;
+  margin: 0;
+}
 .controller {
   display: flex;
   flex-wrap: wrap;
@@ -73,6 +79,7 @@ body {
   </head>
   <body>
     <div id="content">
+      <h1>背景白の時のopacityをかけたRGBコードを作成するツール</h1>
       <section class="controller">
         <label for="color-code-value">RGB16:</label>
         <input id="color-code-value" type="text" v-model="colorCode">
