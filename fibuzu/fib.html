@@ -1,9 +1,30 @@
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" >
-<script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.2.min.js"></script>
-<script type="text/javascript" src="fib.js"></script>
-<script type="text/javascript" src="fib-uzu.js"></script>
-<canvas width="1000" height="1000" id ="my_canvas2"></canvas>
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-78436915-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-78436915-3');
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="/favicon.ico">
+    <title>oieioi</title>
+    <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="fib.js"></script>
+    <script type="text/javascript" src="fib-uzu.js"></script>
+  </head>
+  <body>
 <script type="text/javascript" >
+var canvas = document.createElement('canvas');
+canvas.id = 'my_canvas2';
+canvas.width = screen.width;
+canvas.height = screen.height;
+document.body.appendChild(canvas);
 var canvas2 = document.getElementById('my_canvas2');
 var ctx2 = canvas2.getContext("2d");
 var fibUzu2 = new window.FibUzumaki(ctx2, true);
@@ -27,12 +48,12 @@ var autoSurf = (function() {
         if (xIncre) {x += xper;} else {x -= xper;}
         if (yIncre) {y += yper;} else {y -= yper;}
 
-        ctx2.clearRect(0,0,1000,1000);
+        ctx2.clearRect(0,0,canvas.width,canvas.height);
         var hankeiA = x/100;
         var hankeiB = y/100;
         for (var i = 0; i < 10; i++) {
-            fibUzu2.drawUzumaki(20, 500, 500, (i/5 * Math.PI),  true, hankeiA);
-            fibUzu2.drawUzumaki(20, 500, 500, (i/5 * Math.PI), false, hankeiB);
+            fibUzu2.drawUzumaki(20, canvas.width/2, canvas.height/2, (i/5 * Math.PI),  true, hankeiA);
+            fibUzu2.drawUzumaki(20, canvas.width/2, canvas.height/2, (i/5 * Math.PI), false, hankeiB);
         }
     };
 })();
@@ -45,3 +66,5 @@ $(document).ready(function(){
     });
 })
 </script>
+  </body>
+</html>
