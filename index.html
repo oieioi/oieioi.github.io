@@ -22,7 +22,10 @@
         margin: 0;
         background-color: darkgreen;
       }
-      h1, h2 {
+      h1 {
+        margin: 0;
+      }
+      h2 {
         background-color: greenyellow;
         margin: 0;
       }
@@ -55,7 +58,6 @@
       li a:hover {
         color: #ddd;
         background-color: purple;
-        text-decoration: underline;
       }
       li:nth-child(odd) {
         background-color: blue;
@@ -67,13 +69,14 @@
   </head>
   <body>
     <h1><a href="https://oieioi.github.io">oieioi</a></h1>
+    <h2>SNS</h2>
     <ol>
-      <li><a href="https://github.com/oieioi">GitHub</a></li>
-      <li><a href="https://twitter.com/oieioi">Twitter</a></li>
-      <li><a href="http://oieioi.hatenablog.com">Blog</a></li>
-      <li><a href="https://qiita.com/oieioi">Qiita</a></li>
-      <li><a href="https://www.last.fm/ja/user/ushiroichitaro">last.fm</a></li>
-      <li><a href="https://bookmeter.com/users/27559">読書メーター</a></li>
+      <li><a href="https://github.com/oieioi" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="https://twitter.com/oieioi" target="_blank" rel="noopener">Twitter</a></li>
+      <li><a href="http://oieioi.hatenablog.com" target="_blank" rel="noopener">Blog</a></li>
+      <li><a href="https://qiita.com/oieioi" target="_blank" rel="noopener">Qiita</a></li>
+      <li><a href="https://www.last.fm/ja/user/ushiroichitaro" target="_blank" rel="noopener">last.fm</a></li>
+      <li><a href="https://bookmeter.com/users/27559" target="_blank" rel="noopener">読書メーター</a></li>
     </ol>
     <h2>Demo</h2>
     <ol>
@@ -84,6 +87,21 @@
       <li><a href="./opacitized-color-code/index.html" title="透明度を計算したRGBカラーコードを計算するツール">opacitized color code</a></li>
       <li><a href="./calc-padding/index.html" title="Photoshop などのグラフィック作成ツールで作られた要素間の距離をCSS用に計算するツール">Calculate Padding with Font-size and Line-height</a></li>
       <li><a href="./pointer-events/index.html" title="pointer-events の伝播をテストする">pointer-events: none;</a></li>
-      <li><a href="https://rubygems.org/gems/ketsuban" title="ActiveRecordで欠番を作るgem" target="_blank">ketsuban.gem</a></li>
+      <li><a href="https://rubygems.org/gems/ketsuban" title="ActiveRecordで欠番を作るgem" target="_blank" rel="noopener">ketsuban.gem</a></li>
       <li><a href="./fibuzu/fib.html" title="フィボナッチ数列で計算した渦巻きを回転させる">Fibonazzi uzumaki</a></li>
     </ol>
+    <script>
+      (function(){
+        var colors = [
+          'red', 'blue', 'yellow', 'pink', 'purple', 'white', 'black', 'darkgreen'
+        ];
+        colors.sample = function(){
+          return this[Math.round((Math.random() * this.length))];
+        };
+        setInterval(function(){
+          document.body.style.backgroundColor = colors.sample();
+        }, 120 * 1000);
+      })();
+    </script>
+  </body>
+</html>
