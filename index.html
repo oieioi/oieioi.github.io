@@ -17,6 +17,7 @@
     <title>oieioi</title>
     <style>
       body {
+        transition: all 0.5s ease-out;
         font-family: Courier, sans-serif;
         margin: 0;
         background-color: #fefefe;
@@ -94,15 +95,44 @@
     </ol>
     <script>
       (function(){
-        var colors = [
-          'red', 'blue', 'yellow', 'pink', 'purple', 'white', 'black', 'darkgreen'
+        const colors = [
+          { rate: 20, background: '#fefefe', color: '#333' },
+          { rate: 1, background: 'red', color: '#fefefe'},
+          { rate: 1, background: 'blue', color: '#fefefe'},
+          { rate: 1, background: 'yellow', color: 'purple'},
+          { rate: 1, background: 'pink', color: 'white'},
+          { rate: 1, background: 'purple', color: 'green'},
+          { rate: 1, background: 'black', color: '#fefefe'},
+          { rate: 1, background: 'darkgreen', color: '#fefefe'},
         ];
-        colors.sample = function(){
-          return this[Math.round((Math.random() * this.length))];
-        };
-        setInterval(function(){
-          document.body.style.backgroundColor = colors.sample();
-        }, 120 * 1000);
+        colors.sample = (()=> {
+          let ratedColors = [];
+          colors.forEach(color => {
+            [...Array(color.rate)].forEach(()=> ratedColors.push(color));
+          });
+
+          return ()=>{
+            return ratedColors[Math.round((Math.random() * ratedColors.length))];
+          }
+        })();
+
+        let style = document.createElement('style');
+        document.body.appendChild(style);
+
+        setInterval(() => {
+          if(Math.random() > 0.3) return;
+
+          const color = colors.sample();
+          style.textContent = `
+body {
+  background-color: ${color.background};
+  color: ${color.color};
+}
+a {
+  color: ${color.color};
+}
+          `;
+        }, 1 * 1000);
       })();
     </script>
   </body>
