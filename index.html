@@ -17,7 +17,7 @@
     <title>oieioi</title>
     <style>
       body {
-        transition: all 0.5s ease-out;
+        transition: all 3s ease-out;
         font-family: Courier, sans-serif;
         margin: 0;
         background-color: #fefefe;
@@ -96,7 +96,7 @@
     <script>
       (function(){
         const colors = [
-          { rate: 20, background: '#fefefe', color: '#333' },
+          { rate: 1, background: '#fefefe', color: '#333' },
           { rate: 1, background: 'red', color: '#fefefe'},
           { rate: 1, background: 'blue', color: '#fefefe'},
           { rate: 1, background: 'yellow', color: 'purple'},
@@ -119,8 +119,8 @@
         let style = document.createElement('style');
         document.body.appendChild(style);
 
-        setInterval(() => {
-          if(Math.random() > 0.8) return;
+        //setInterval(() => {
+          //if(Math.random() < 0.9) return;
 
           const color = colors.sample();
           style.textContent = `
@@ -132,7 +132,7 @@ a {
   color: ${color.color};
 }
           `;
-        }, 1 * 1000);
+        //}, 1 * 5000);
       })();
     </script>
   </body>
